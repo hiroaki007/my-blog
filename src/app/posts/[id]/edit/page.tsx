@@ -18,6 +18,15 @@ export default function EditPostPage() {
             const res = await fetch(`/api/posts/${id}`)
             if(res.ok) {
                 const data = await res.json()
+
+                // ✅ 投稿者がログインユーザーと一致しない場合
+                if(data.author !== session?.user?.name) {
+                    alert('この投稿は編集できません')
+                    router.push('/posts')
+                    return
+                }
+
+
                 setTitle(data.title)
                 setContent(data.content)
             } else {
@@ -28,7 +37,7 @@ export default function EditPostPage() {
         }
 
         fetchPost()
-    }, [id, router])
+    }, [id, router, session, status])
 
 
     const handleUpdate = async (e: React.FormEvent) => {
@@ -51,6 +60,7 @@ export default function EditPostPage() {
         } else {
             alert('更新に失敗しました')
         }
+    }    
 
         if(status === 'loading' || loading) {
             return <div className="p-6">読み込み中...</div>
@@ -84,13 +94,4 @@ export default function EditPostPage() {
                 </form>
             </div>
         )
-
-
-
-
-    }
-
-
-
-
 }

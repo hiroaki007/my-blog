@@ -1,6 +1,9 @@
-import { notFound } from "next/navigation";
 import { connectToDatabase } from "@/lib/db";
 import Post from "@/models/post";
+import { notFound } from "next/navigation";
+import DeleteButton from "@/components/DeleteButton";
+import Link from "next/link";
+
 
 type Props = {
     params: {
@@ -26,6 +29,15 @@ export default async function PostDetailPage({ params }: Props) {
                     著者: {post.author} | {new Date(post.createdAt).toLocaleDateString()}
                 </div>
                 <div className="prose max-w-none">{post.content}</div>
+
+                <Link
+                    href={`/posts/${post._id}/edit`}
+                    className="inline-block mr-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                >
+                    編集する
+                </Link>
+
+                <DeleteButton postId={post._id.toString()} author={post.author} />
             </div>
         ) 
         

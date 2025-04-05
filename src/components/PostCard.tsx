@@ -1,5 +1,7 @@
 import { IPost } from '@/models/post'
 import Link from 'next/link'
+import DeleteButton from './DeleteButton'
+
 
 type Props = {
     post: IPost
@@ -15,9 +17,16 @@ export default function PostCard({ post}: Props) {
                 著者:{post.author} / {new Date(post.createdAt).toLocaleDateString()}
             </div>
 
-            <Link href={`/post/${post._id}`} className='text-blue-500 text-sm mt-2 inline-block'>
+            <Link href={`/posts/${post._id}`} className='text-blue-500 text-sm mt-2 inline-block'>
                 → 記事を読む
             </Link>
+
+            <Link href={`/posts/${post._id}/edit`} className="text-sm text-blue-600 hover:underline">
+                編集する
+            </Link>
+
+            <DeleteButton postId={post._id.toString()} author={post.author} />
+
         </div>
     )
 }
